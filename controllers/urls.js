@@ -28,3 +28,24 @@ export async function getRedirecturl (req, res) {
     res.redirect(url.redirectURL);
 };
 
+
+
+export async function analytics(req, res){
+    try {
+        const shortId = req.params.shortId;
+        console.log(shortId);
+        const url = await URL.findOne({ shortId: shortId });
+        console.log(url , "url");
+        if (!url) {
+            return res.status(404).json({ error: "url not found" });
+        }
+        res.status(200).json({ visitHistory: url.visitHistory.length });
+
+
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+        
+    }
+
+}
